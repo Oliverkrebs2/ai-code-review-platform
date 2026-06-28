@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from app.review_engine import analyze_pull_request
+
 app = FastAPI(title="AI Code Review Platform")
 
 
@@ -10,17 +12,4 @@ def health_check():
 
 @app.post("/reviews/analyze")
 def analyze_review():
-    return {
-        "score": 82,
-        "summary": "The pull request is mostly safe but includes a potential N+1 query and missing input validation.",
-        "issues": [
-            {
-                "severity": "medium",
-                "category": "performance",
-                "file": "services/users.py",
-                "line": 88,
-                "message": "Potential N+1 query pattern detected.",
-                "suggestion": "Batch database calls or use eager loading."
-            }
-        ]
-    }
+    return analyze_pull_request()
